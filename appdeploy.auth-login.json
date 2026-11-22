@@ -1,0 +1,17 @@
+{
+  "methods": [
+    "google",
+    "email"
+  ],
+  "headline": "Sherazi Motors Admin",
+  "subtitle": "Sign in with your authorised account to manage vehicle listings.",
+  "style": {
+    "mode": "light",
+    "accentColor": "#a88754",
+    "backgroundColor": "#f3f1eb",
+    "panelColor": "#e9e6de",
+    "textColor": "#1d292b",
+    "fontFamily": "DM Sans, sans-serif",
+    "borderRadius": 2
+  }
+}
