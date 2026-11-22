@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shami-motors-ru0tft.v2.appdeploy.ai/sitemap.xml
