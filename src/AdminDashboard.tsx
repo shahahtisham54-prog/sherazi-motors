@@ -75,8 +75,8 @@ export default function AdminDashboard() {
     catch { setMessage('Could not delete this listing.'); }
   };
 
-  const login = () => { window.location.href = '/cdn-cgi/access/login?returnTo=' + encodeURIComponent(window.location.href); };
-  const logout = () => { window.location.href = '/cdn-cgi/access/logout?returnTo=' + encodeURIComponent(window.location.origin + '/'); };
+  const login = () => { window.location.href = '/api/access/login?returnTo=' + encodeURIComponent(window.location.href); };
+  const logout = () => { window.location.href = '/api/access/logout'; };
 
   if (checking) return <div className="admin-loading">Checking secure access…</div>;
   if (!user) return <main className="admin-gate"><a href="/" className="admin-back"><ArrowLeft size={16} /> Sherazi Motors</a><section className="admin-login"><div className="admin-icon"><ShieldCheck /></div><small>SHERAZI MOTORS · PRIVATE AREA</small><h1>Welcome back.</h1><p>Sign in with your authorised account to manage vehicle listings.</p><button className="admin-main-button" onClick={login}>Sign in securely</button>{message && <p>{message}</p>}</section></main>;
