@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { api } from '@appdeploy/client';
+import { api } from './lib/api';
 import VehicleShowcase from './VehicleShowcase';
 import './vehicle-showcase.css';
 import {
