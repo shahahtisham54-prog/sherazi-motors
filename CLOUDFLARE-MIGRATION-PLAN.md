@@ -40,5 +40,13 @@ The current `package.json` does not list either AppDeploy package. A plain Vite 
 6. Test public site, enquiry persistence, admin authorization, and vehicle CRUD.
 7. Only after successful QA, decide whether to make this the production branch/custom domain.
 
+## Migration code prepared on the isolated branch
+- Replaced the three frontend AppDeploy API client imports with a same-origin API helper.
+- Added Pages Functions for public enquiries and vehicle inventory.
+- Added admin Pages Functions protected by Cloudflare Access JWT validation and an owner email allowlist.
+- Added login/logout endpoints for Cloudflare Access.
+- Added the initial D1 SQL migration and `wrangler.jsonc` Pages configuration.
+- Temporarily deferred vehicle photo/video uploads and email notifications. Enquiries are saved to D1 and return a WhatsApp follow-up link.
+
 ## Not yet done
-No Cloudflare Pages project has been deployed, no D1 database has been created, and no production AppDeploy settings have been changed.
+No Cloudflare Pages deployment has been made, no D1 database has been created or bound, Cloudflare Access has not been configured, and no production AppDeploy settings have been changed. The migration branch has not yet had a full build/runtime test; do not deploy until those checks and Cloudflare bindings are complete.
