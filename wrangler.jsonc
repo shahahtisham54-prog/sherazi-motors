@@ -2,5 +2,12 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "sherazi-motors",
   "pages_build_output_dir": "./dist",
-  "compatibility_date": "2026-11-23"
+  "compatibility_date": "2026-11-23",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sherazi-motors-db",
+      "database_id": "266173b5-b3b8-49f1-a28c-25e7563372c1"
+    }
+  ]
 }
