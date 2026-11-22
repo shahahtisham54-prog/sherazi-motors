@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Save a valid enquiry and WhatsApp follow-up",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "enquiry form",
+      "persistent enquiry record",
+      "owner email notification",
+      "WhatsApp handoff"
+    ],
+    "description": "Checks the existing public enquiry workflow.",
+    "steps": [
+      "Submit a valid visitor enquiry",
+      "Confirm the saved state and WhatsApp link"
+    ],
+    "expected": "The enquiry is saved and a WhatsApp follow-up link is displayed."
+  },
+  {
+    "name": "Reject invalid enquiry details",
+    "viewport": "desktop",
+    "covers": [
+      "enquiry validation",
+      "invalid enquiry guardrail"
+    ],
+    "description": "Checks invalid contact details are rejected.",
+    "steps": [
+      "Submit a name shorter than two characters or invalid phone"
+    ],
+    "expected": "The form rejects invalid details and does not save an enquiry."
+  },
+  {
+    "name": "Protect admin vehicle APIs",
+    "viewport": "desktop",
+    "covers": [
+      "server-side authentication",
+      "admin email allowlist",
+      "unauthorised access rejection"
+    ],
+    "description": "Private vehicle endpoints must reject signed-out and non-admin users.",
+    "steps": [
+      "Request GET /api/admin/vehicles without an access token"
+    ],
+    "expected": "The backend returns an authentication or authorisation error and does not reveal inventory."
+  },
+  {
+    "name": "Manage vehicle listings and open the public detail view",
+    "viewport": "desktop",
+    "covers": [
+      "vehicle creation",
+      "vehicle photo upload",
+      "vehicle editing",
+      "sold status",
+      "vehicle deletion",
+      "public inventory visibility",
+      "interactive vehicle detail modal",
+      "vehicle media placeholders",
+      "vehicle-specific WhatsApp enquiry"
+    ],
+    "description": "Checks the authorised administrator can manage vehicles and visitors can open a listing detail view.",
+    "steps": [
+      "Sign in with the authorised account",
+      "Add a vehicle and photos",
+      "Edit its details",
+      "Open the vehicle card on the public page",
+      "Review its specifications and media areas",
+      "Mark it sold and confirm it is hidden publicly",
+      "Relist then delete it"
+    ],
+    "expected": "Vehicle CRUD remains restricted to the approved administrator; available vehicle cards open a detail view with the supplied gallery, future media areas and a vehicle-specific WhatsApp enquiry; sold listings are hidden publicly."
+  },
+  {
+    "name": "Use vehicle dashboard and public detail view on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "responsive admin layout",
+      "mobile vehicle form",
+      "mobile photo upload",
+      "responsive public vehicle detail modal"
+    ],
+    "description": "Checks the admin dashboard and vehicle detail experience are usable on a phone.",
+    "steps": [
+      "Open /admin on mobile",
+      "Sign in",
+      "Add a vehicle with photos",
+      "Open the public vehicle card and review its detail view"
+    ],
+    "expected": "The dashboard and public detail view fit mobile screens and their controls remain usable."
+  }
+]
