@@ -6,7 +6,7 @@ type Props = { lightsOn: boolean; rotating: boolean };
 
 export function CarModel3D({ lightsOn, rotating }: Props) {
   const host = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<{ scene: THREE.Scene; camera: THREE.PerspectiveCamera; renderer: THREE.WebGLRenderer; car: THREE.Group; lights: THREE.Mesh[]; beams: THREE.Mesh[]; spots: THREE.SpotLight[]; streaks: THREE.Mesh[] } | null>(null);
+  const sceneRef = useRef<{ scene: THREE.Scene; camera: THREE.PerspectiveCamera; renderer: THREE.WebGLRenderer; car: THREE.Group; lights: THREE.Mesh[]; beams: THREE.Mesh[]; spots: THREE.SpotLight[]; streaks: THREE.Mesh[]; wheels: THREE.Group[] } | null>(null);
 
   useEffect(() => {
     const el = host.current;
@@ -79,17 +79,18 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
       const tailGlow = new THREE.Mesh(new THREE.PlaneGeometry(.7,.28), new THREE.MeshBasicMaterial({color:0xff1828,transparent:true,opacity:.26,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
       tailGlow.position.set(-2.17,.91,z); tailGlow.rotation.y=Math.PI/2; car.add(tailGlow); beams.push(tailGlow);
     });
-    const wheelGroup = new THREE.Group();
+    const wheels: THREE.Group[] = [];
     [-1.28,1.28].forEach(x => [-.91,.91].forEach(z => {
+      const wheel = new THREE.Group(); wheel.position.set(x,.49,z); car.add(wheel); wheels.push(wheel);
       const tire = new THREE.Mesh(new THREE.CylinderGeometry(.48,.48,.28,40), rubber);
-      tire.rotation.x = Math.PI/2; tire.position.set(x,.49,z); tire.castShadow=true; car.add(tire);
+      tire.rotation.x = Math.PI/2; tire.castShadow=true; wheel.add(tire);
       const rim = new THREE.Mesh(new THREE.CylinderGeometry(.31,.31,.295,32), rimMat);
-      rim.rotation.x = Math.PI/2; rim.position.set(x,.49,z*1.01); car.add(rim);
+      rim.rotation.x = Math.PI/2; rim.position.z=z>0?.015:-.015; wheel.add(rim);
       const hub = new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.31,24), dark);
-      hub.rotation.x = Math.PI/2; hub.position.set(x,.49,z*1.02); car.add(hub);
+      hub.rotation.x = Math.PI/2; wheel.add(hub);
       for(let i=0;i<10;i++){
         const spoke = new THREE.Mesh(new THREE.BoxGeometry(.035,.48,.035), chrome);
-        spoke.position.set(x,.49,z*1.025); spoke.rotation.z=i*Math.PI/5; car.add(spoke);
+        spoke.rotation.z=i*Math.PI/5; wheel.add(spoke);
       }
     }));
     const underGlow = new THREE.PointLight(0x83c5d6, 1.2, 5);
@@ -105,13 +106,13 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     }
     const shadow = new THREE.Mesh(new THREE.CircleGeometry(2.5,48), new THREE.MeshBasicMaterial({ color: 0x000000, transparent:true, opacity:.34 }));
     shadow.rotation.x=-Math.PI/2; shadow.position.y=.025; shadow.scale.set(1,.42,1); car.add(shadow);
-    sceneRef.current={scene,camera,renderer,car,lights:[...lamps,...tailLamps],beams,spots,streaks};
+    sceneRef.current={scene,camera,renderer,car,lights:[...lamps,...tailLamps],beams,spots,streaks,wheels};
 
     const resize=()=>{ if(!el||disposed)return; const w=el.clientWidth||640; const h=el.clientHeight||360; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); };
     const observer=new ResizeObserver(resize); observer.observe(el); resize();
     let frame=0;
     const clock=new THREE.Clock();
-    const render=()=>{ if(disposed)return; const dt=Math.min(clock.getDelta(),.04); const data=sceneRef.current; if(data){ data.streaks.forEach(s=>{s.position.x-=s.userData.speed*dt*60;if(s.position.x < -6){s.position.x=6;s.position.y=.45+Math.random()*2.1;s.position.z=(Math.random()-.5)*7;}}); } renderer.render(scene,camera); frame=requestAnimationFrame(render); };
+    const render=()=>{ if(disposed)return; const dt=Math.min(clock.getDelta(),.04); const data=sceneRef.current; if(data){ data.streaks.forEach(s=>{s.position.x-=s.userData.speed*dt*60;if(s.position.x < -6){s.position.x=6;s.position.y=.45+Math.random()*2.1;s.position.z=(Math.random()-.5)*7;}}); data.wheels.forEach(w=>{w.rotation.z-=dt*8.5;}); } renderer.render(scene,camera); frame=requestAnimationFrame(render); };
     render();
     return ()=>{ disposed=true; cancelAnimationFrame(frame); observer.disconnect(); renderer.dispose(); scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose(); const m=o.material; (Array.isArray(m)?m:[m]).forEach(v=>v.dispose());}}); el.removeChild(renderer.domElement); sceneRef.current=null; };
   }, []);
