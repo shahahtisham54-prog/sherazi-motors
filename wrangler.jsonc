@@ -9,5 +9,11 @@
       "database_name": "sherazi-motors-db",
       "database_id": "266173b5-b3b8-49f1-a28c-25e7563372c1"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "VEHICLE_PHOTOS",
+      "bucket_name": "sherazi-motors-photos"
+    }
   ]
 }
