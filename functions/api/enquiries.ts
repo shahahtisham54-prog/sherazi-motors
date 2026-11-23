@@ -1,4 +1,4 @@
-interface Env { DB: D1Database }
+interface Env { DB: D1Database; RESEND_API_KEY?: string; NOTIFICATION_EMAIL?: string }
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; }
@@ -34,10 +34,32 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     "Reference: " + id
   ].join("\n");
 
+  let emailNotified = false;
+  if (env.RESEND_API_KEY && env.NOTIFICATION_EMAIL) {
+    const escapeHtml = (value: string) => value.replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char] || char));
+    try {
+      const emailResponse = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + env.RESEND_API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: "Sherazi Motors <onboarding@resend.dev>",
+          to: [env.NOTIFICATION_EMAIL],
+          subject: "New website enquiry · " + name,
+          text: "A new enquiry was submitted on the Sherazi Motors website.\n\nName: " + name + "\nPhone: " + phone + "\nInterest: " + interest + "\nDetails: " + (message || "Not provided") + "\nReference: " + id,
+          html: "<h2>New website enquiry</h2><p><b>Name:</b> " + escapeHtml(name) + "</p><p><b>Phone:</b> " + escapeHtml(phone) + "</p><p><b>Interest:</b> " + escapeHtml(interest) + "</p><p><b>Details:</b><br>" + escapeHtml(message || "Not provided").replace(/\n/g, "<br>") + "</p><p><b>Reference:</b> " + id + "</p>"
+        })
+      });
+      emailNotified = emailResponse.ok;
+      if (!emailResponse.ok) console.error("Resend email request failed", emailResponse.status, await emailResponse.text());
+    } catch (error) {
+      console.error("Enquiry email notification failed", error);
+    }
+  }
+
   return Response.json({
     ok: true,
     enquiryId: id,
-    emailNotified: false,
+    emailNotified,
     whatsappUrl: "https://wa.me/923196982676?text=" + encodeURIComponent(whatsappText)
   });
 };
