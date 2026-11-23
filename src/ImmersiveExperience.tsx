@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowDown, ArrowUpRight, Gauge, RotateCw, Sparkles } from 'lucide-react';
 import './immersive.css';
+import { CarModel3D } from './CarModel3D';
 
 const detailCards = [
   { number: '01', title: 'Sculpted bodywork', copy: 'A closer look at the lines, stance and proportions that define every vehicle.', icon: 'BODY' },
@@ -19,32 +20,9 @@ export function HeroCarExperience() {
       <div className="hero-car-orbit orbit-one" />
       <div className="hero-car-orbit orbit-two" />
       <div className="hero-car-label"><span>DESIGN STUDY / 001</span><b>SHERAZI MOTORS</b></div>
-      <button className="hero-car-stage" type="button" onClick={rotateView} onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width - 0.5; const y = (event.clientY - rect.top) / rect.height - 0.5; event.currentTarget.style.setProperty("--tilt-x", `${x * 12}deg`); event.currentTarget.style.setProperty("--tilt-y", `${-y * 8}deg`); }} onPointerLeave={event => { event.currentTarget.style.setProperty("--tilt-x", "0deg"); event.currentTarget.style.setProperty("--tilt-y", "0deg"); }} aria-label="Move pointer to tilt or tap to change the 3D car view">
-        <span className="car-shadow" />
-        <span className="car-model">
-          <span className="car-roof" />
-          <span className="car-window window-front" />
-          <span className="car-window window-rear" />
-          <span className="car-windshield" />
-          <span className="car-hood" />
-          <span className="car-body" />
-          <span className="car-door-line door-front" />
-          <span className="car-door-line door-rear" />
-          <span className="car-door-handle handle-front" />
-          <span className="car-door-handle handle-rear" />
-          <span className="car-side-mirror" />
-          <span className="car-side-skirt" />
-          <span className="car-grille" />
-          <span className="car-grille-frame" />
-          <span className="car-lower-intake" />
-          <span className="car-headlight headlight-left" />
-          <span className="car-headlight headlight-right" />
-          <span className="car-fog-light" />
-          <span className="car-wheel wheel-front"><i /></span>
-          <span className="car-wheel wheel-rear"><i /></span>
-          <span className="car-reflection" />
-        </span>
-      </button>
+      <div className="hero-car-stage real-car-stage">
+        <CarModel3D lightsOn={lights} rotating={rotating} />
+      </div>
       <div className="hero-car-controls">
         <button type="button" onClick={rotateView}><RotateCw size={15} /> {rotating ? 'ROTATING...' : 'ROTATE VIEW'}</button>
         <button type="button" onClick={() => setLights(value => !value)}><Sparkles size={15} /> {lights ? 'LIGHTS ON' : 'LIGHTS OFF'}</button>
