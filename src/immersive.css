@@ -784,3 +784,41 @@
     font-size: 6px;
   }
 }
+
+
+/* Keep the initial page light: the WebGL showroom loads only after visitor intent. */
+.car-model-load {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(82%, 290px);
+  min-height: 112px;
+  padding: 18px;
+  border: 1px solid rgba(220, 190, 140, .48);
+  border-radius: 2px;
+  background: rgba(12, 22, 25, .72);
+  color: #eee4d1;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  transition: background .2s, border-color .2s;
+}
+.car-model-load:hover {
+  background: rgba(181, 146, 91, .22);
+  border-color: #d1b17b;
+}
+.car-model-load svg { color: #d1b17b; }
+.car-model-load small {
+  color: #b9b2a3;
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: .05em;
+}
+.car-model-loading {
+  color: #e6d7b8;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
