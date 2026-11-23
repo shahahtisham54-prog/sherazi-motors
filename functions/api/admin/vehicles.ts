@@ -1,7 +1,7 @@
-import type { PluginData } from "@cloudflare/pages-plugin-cloudflare-access";
 interface Env { DB: D1Database }
+interface AdminData { adminEmail?: string }
 const OWNER = "as3703195@gmail.com";
-const allowed = (data: PluginData) => String(data.cloudflareAccess.JWT.payload.email || "").toLowerCase() === OWNER;
+const allowed = (data: AdminData) => data.adminEmail === OWNER;
 function photoList(value: unknown): string[] {
   try {
     const parsed = typeof value === "string" ? JSON.parse(value) : value;
@@ -9,7 +9,7 @@ function photoList(value: unknown): string[] {
     return parsed.filter((item): item is string => typeof item === "string" && /^[a-f0-9-]+\.(?:jpg|jpeg|png|webp)$/i.test(item)).slice(0, 8);
   } catch { return []; }
 }
-export const onRequestGet: PagesFunction<Env, string, PluginData> = async ({ data, env }) => {
+export const onRequestGet: PagesFunction<Env, string, AdminData> = async ({ data, env }) => {
   if (!allowed(data)) return Response.json({ error: "Not authorised." }, { status: 403 });
   try {
     const result = await env.DB.prepare(
