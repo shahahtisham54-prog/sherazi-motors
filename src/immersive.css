@@ -224,3 +224,40 @@
  .hero-car-experience.view-2 .hero-car-stage .car-model{transform:scale(.62) rotateX(calc(14deg + var(--tilt-y,0deg))) rotateY(calc(28deg + var(--tilt-x,0deg))) rotateZ(1deg)}
 }
 @media(prefers-reduced-motion:reduce){.hero-car-ambient{display:none}}
+
+
+/* Rotation button: perform a visible, complete one-turn spin, then settle at the selected angle. */
+.hero-car-experience.is-rotating .hero-car-stage .car-model {
+  animation: sherazi-car-full-rotation 1.2s cubic-bezier(.2,.72,.25,1) both;
+}
+@keyframes sherazi-car-full-rotation {
+  0% { transform: scale(.88) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg) translateY(0); }
+  35% { transform: scale(.94) rotateX(13deg) rotateY(105deg) rotateZ(1deg) translateY(-8px); }
+  72% { transform: scale(.94) rotateX(10deg) rotateY(245deg) rotateZ(-1deg) translateY(-8px); }
+  100% { transform: scale(.88) rotateX(9deg) rotateY(341deg) rotateZ(-1deg) translateY(0); }
+}
+@media (max-width: 950px) and (min-width: 681px) {
+  .hero-car-experience.is-rotating .hero-car-stage .car-model {
+    animation-name: sherazi-car-full-rotation-tablet;
+  }
+}
+@keyframes sherazi-car-full-rotation-tablet {
+  0% { transform: scale(.76) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg); }
+  35% { transform: scale(.82) rotateX(13deg) rotateY(105deg) translateY(-7px); }
+  72% { transform: scale(.82) rotateX(10deg) rotateY(245deg) translateY(-7px); }
+  100% { transform: scale(.76) rotateX(9deg) rotateY(341deg) rotateZ(-1deg); }
+}
+@media (max-width: 680px) {
+  .hero-car-experience.is-rotating .hero-car-stage .car-model {
+    animation-name: sherazi-car-full-rotation-mobile;
+  }
+}
+@keyframes sherazi-car-full-rotation-mobile {
+  0% { transform: scale(.62) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg); }
+  35% { transform: scale(.67) rotateX(13deg) rotateY(105deg) translateY(-5px); }
+  72% { transform: scale(.67) rotateX(10deg) rotateY(245deg) translateY(-5px); }
+  100% { transform: scale(.62) rotateX(9deg) rotateY(341deg) rotateZ(-1deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-car-experience.is-rotating .hero-car-stage .car-model { animation-duration: .01ms; }
+}
