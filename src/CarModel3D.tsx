@@ -5,7 +5,7 @@ type Props = { lightsOn: boolean; rotating: boolean };
 
 export function CarModel3D({ lightsOn, rotating }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const sceneState = useRef<{ headlights: THREE.MeshStandardMaterial[]; group: THREE.Group } | null>(null);
+  const sceneState = useRef<{ headlights: THREE.MeshStandardMaterial[]; group: THREE.Group; invalidate: () => void } | null>(null);
   const rotatingRef = useRef(rotating);
   rotatingRef.current = rotating;
 
@@ -19,7 +19,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     camera.lookAt(0, 0.72, 0);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.25 : 1.5));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -140,14 +140,34 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     shadow.position.y = 0.025;
     scene.add(shadow);
 
-    sceneState.current = { headlights, group: car };
-
     let frame = 0;
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
     let targetY = -0.18;
     let targetX = 0.08;
+    let rendering = false;
+    const drawFrame = () => {
+      rendering = false;
+      if (!dragging) {
+        if (rotatingRef.current) car.rotation.y += 0.012;
+        car.rotation.y += (targetY - car.rotation.y) * 0.045;
+        car.rotation.x += (targetX - car.rotation.x) * 0.045;
+      }
+      renderer.render(scene, camera);
+      const settling = Math.abs(targetY - car.rotation.y) > 0.001 || Math.abs(targetX - car.rotation.x) > 0.001;
+      if (dragging || rotatingRef.current || settling) {
+        rendering = true;
+        frame = window.requestAnimationFrame(drawFrame);
+      }
+    };
+    const invalidate = () => {
+      if (!rendering) {
+        rendering = true;
+        frame = window.requestAnimationFrame(drawFrame);
+      }
+    };
+    sceneState.current = { headlights, group: car, invalidate };
 
     const resize = () => {
       const width = Math.max(host.clientWidth, 1);
@@ -155,6 +175,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
+      invalidate();
     };
     const observer = new ResizeObserver(resize);
     observer.observe(host);
@@ -162,6 +183,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
 
     const pointerDown = (event: PointerEvent) => {
       dragging = true;
+      invalidate();
       lastX = event.clientX;
       lastY = event.clientY;
       renderer.domElement.style.cursor = 'grabbing';
@@ -171,11 +193,13 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
       if (!dragging) return;
       targetY += (event.clientX - lastX) * 0.009;
       targetX = THREE.MathUtils.clamp(targetX + (event.clientY - lastY) * 0.004, -0.22, 0.35);
+      invalidate();
       lastX = event.clientX;
       lastY = event.clientY;
     };
     const pointerUp = () => {
       dragging = false;
+      invalidate();
       renderer.domElement.style.cursor = 'grab';
     };
     renderer.domElement.addEventListener('pointerdown', pointerDown);
@@ -184,16 +208,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     renderer.domElement.addEventListener('pointercancel', pointerUp);
     renderer.domElement.addEventListener('lostpointercapture', pointerUp);
 
-    const animate = () => {
-      frame = window.requestAnimationFrame(animate);
-      if (!dragging) {
-        car.rotation.y += rotatingRef.current ? 0.012 : 0;
-        car.rotation.y += (targetY - car.rotation.y) * 0.045;
-        car.rotation.x += (targetX - car.rotation.x) * 0.045;
-      }
-      renderer.render(scene, camera);
-    };
-    animate();
+    invalidate();
 
     return () => {
       window.cancelAnimationFrame(frame);
@@ -224,7 +239,12 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     sceneState.current.group.traverse(object => {
       if (object instanceof THREE.PointLight && object !== null) object.intensity = lightsOn ? 2.4 : 0;
     });
+    sceneState.current.invalidate();
   }, [lightsOn]);
+
+  useEffect(() => {
+    sceneState.current?.invalidate();
+  }, [rotating]);
 
   return (
     <div
