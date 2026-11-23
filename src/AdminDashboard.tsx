@@ -23,6 +23,8 @@ export default function AdminDashboard() {
   const [photoBusy, setPhotoBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [accessIssue, setAccessIssue] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginBusy, setLoginBusy] = useState(false);
 
   const load = async () => {
     const response = await api.get('/api/admin/vehicles');
@@ -126,11 +128,27 @@ export default function AdminDashboard() {
     catch (error) { setMessage(messageOf(error, 'Could not delete this listing.')); }
   };
 
-  const login = () => { window.location.href = '/api/access/login?returnTo=' + encodeURIComponent(window.location.href); };
-  const logout = () => { window.location.href = '/api/access/logout'; };
+  const login = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!password || loginBusy) return;
+    setLoginBusy(true);
+    setAccessIssue('');
+    try {
+      const response = await api.post('/api/access/login', { password });
+      setUser(response.data.user?.email || '');
+      setPassword('');
+    } catch (error) {
+      setAccessIssue(messageOf(error, 'Sign-in failed. Please check your password.'));
+    } finally {
+      setLoginBusy(false);
+    }
+  };
+  const logout = async () => {
+    try { await api.post('/api/access/logout', {}); } finally { setUser(''); setItems([]); }
+  };
 
   if (checking) return <div className="admin-loading">Checking secure access…</div>;
-  if (!user) return <main className="admin-gate"><a href="/" className="admin-back"><ArrowLeft size={16} /> Sherazi Motors</a><section className="admin-login"><div className="admin-icon"><ShieldCheck /></div><small>SHERAZI MOTORS · PRIVATE AREA</small><h1>{accessIssue ? 'Secure access setup needed.' : 'Welcome back.'}</h1><p>{accessIssue ? 'Cloudflare Access is protecting this dashboard, but its Pages environment settings are incomplete.' : 'Sign in with your authorised account to manage vehicle listings.'}</p>{accessIssue ? <p role="alert">{accessIssue}</p> : <button className="admin-main-button" onClick={login}>Sign in securely</button>}</section></main>;
+  if (!user) return <main className="admin-gate"><a href="/" className="admin-back"><ArrowLeft size={16} /> Sherazi Motors</a><section className="admin-login"><div className="admin-icon"><ShieldCheck /></div><small>SHERAZI MOTORS · PRIVATE AREA</small><h1>Welcome back.</h1><p>Enter your private admin password to manage vehicle listings.</p><form onSubmit={login}><label>Password<input type="password" autoComplete="current-password" required value={password} onChange={event => setPassword(event.target.value)} /></label><button className="admin-main-button" disabled={loginBusy}>{loginBusy ? 'Signing in…' : 'Sign in securely'}</button></form>{accessIssue && <p role="alert">{accessIssue}</p>}</section></main>;
   if (user.toLowerCase() !== OWNER) return <main className="admin-gate"><section className="admin-login"><h1>Not authorised.</h1><p>This account cannot manage Sherazi Motors listings.</p><button className="admin-main-button" onClick={logout}>Sign out <LogOut size={16} /></button></section></main>;
 
   return <main className="admin-wrap">
