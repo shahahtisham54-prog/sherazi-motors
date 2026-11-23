@@ -6,7 +6,10 @@ async function request<T = any>(method: string, url: string, body?: unknown): Pr
     headers: body === undefined ? { Accept: "application/json" } : { Accept: "application/json", "Content-Type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body)
   });
-  const data = await response.json().catch(() => ({}));
+  const raw = await response.text();
+  let data: any = {};
+  try { data = raw ? JSON.parse(raw) : {}; }
+  catch { data = { error: raw || "The request could not be completed." }; }
   if (!response.ok) {
     const error = new Error(data?.error || "The request could not be completed.") as Error & { response?: { status: number; data: unknown } };
     error.response = { status: response.status, data };
