@@ -9,12 +9,11 @@ const detailCards = [
 ];
 
 export function HeroCarExperience() {
-  const [view, setView] = useState(0);
   const [rotating, setRotating] = useState(false);
   const [lights, setLights] = useState(false);
-  const rotateView = () => { setView(current => (current + 1) % 3); setRotating(true); window.setTimeout(() => setRotating(false), 1250); };
+  const rotateView = () => { if (rotating) return; setRotating(true); window.setTimeout(() => setRotating(false), 1250); };
   return (
-    <div className={`hero-car-experience view-${view} ${rotating ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
+    <div className={`hero-car-experience view-0 ${rotating ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
       <div className="hero-car-ambient ambient-left" />
       <div className="hero-car-ambient ambient-right" />
       <div className="hero-car-orbit orbit-one" />
@@ -47,7 +46,7 @@ export function HeroCarExperience() {
         </span>
       </button>
       <div className="hero-car-controls">
-        <button type="button" onClick={rotateView}><RotateCw size={15} /> {view === 0 ? 'ROTATE VIEW' : view === 1 ? 'NEXT ANGLE' : 'RESET VIEW'}</button>
+        <button type="button" onClick={rotateView}><RotateCw size={15} /> {rotating ? 'ROTATING...' : 'ROTATE VIEW'}</button>
         <button type="button" onClick={() => setLights(value => !value)}><Sparkles size={15} /> {lights ? 'LIGHTS ON' : 'LIGHTS OFF'}</button>
       </div>
       <div className="hero-car-caption"><Gauge size={15} /><span>INTERACTIVE DESIGN CONCEPT</span><span className="caption-dot" /></div>
