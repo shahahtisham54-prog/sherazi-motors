@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from './lib/api';
 import {
   ArrowUpRight,
@@ -29,21 +29,44 @@ function formatPrice(price: number) {
 
 export default function VehicleShowcase() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [selected, setSelected] = useState<Vehicle | null>(null);
 
   useEffect(() => {
     let active = true;
-    api.get('/api/vehicles')
-      .then(response => {
-        if (active) setVehicles(response.data.vehicles || []);
-      })
-      .catch(error => console.error('Inventory could not be loaded', error))
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+    let started = false;
+    let observer: IntersectionObserver | undefined;
+    const loadInventory = () => {
+      if (started) return;
+      started = true;
+      if (active) setLoading(true);
+      api.get('/api/vehicles')
+        .then(response => {
+          if (active) setVehicles(response.data.vehicles || []);
+        })
+        .catch(error => console.error('Inventory could not be loaded', error))
+        .finally(() => {
+          if (active) setLoading(false);
+        });
+    };
+
+    const section = sectionRef.current;
+    if (!section || !('IntersectionObserver' in window)) {
+      loadInventory();
+    } else {
+      observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          observer?.disconnect();
+          loadInventory();
+        }
+      }, { rootMargin: '300px 0px' });
+      observer.observe(section);
+    }
+
     return () => {
       active = false;
+      observer?.disconnect();
     };
   }, []);
 
@@ -61,7 +84,7 @@ export default function VehicleShowcase() {
   }, [selected]);
 
   return (
-    <section className="vehicle-showcase" id="available-cars">
+    <section ref={sectionRef} className="vehicle-showcase" id="available-cars">
       <div className="vehicle-showcase-heading">
         <div>
           <div className="eyebrow"><span /> CURRENT INVENTORY</div>
