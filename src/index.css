@@ -1070,3 +1070,17 @@ select {
 .vehicle-empty,
 .vehicle-public-info small,
 .vehicle-card-meta { color: #5d6761; }
+
+
+/* Additional contrast corrections for secondary copy on light surfaces. */
+:root {
+  --muted: #56615b;
+}
+.section-heading > p,
+.category-card p,
+.step p,
+.contact-copy > p,
+.empty-state,
+.form-disclaimer {
+  color: #505b55;
+}
