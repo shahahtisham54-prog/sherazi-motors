@@ -9,34 +9,47 @@ const detailCards = [
 ];
 
 export function HeroCarExperience() {
-  const [active, setActive] = useState(false);
+  const [view, setView] = useState(0);
   const [lights, setLights] = useState(false);
+  const rotateView = () => setView(current => (current + 1) % 3);
   return (
-    <div className={`hero-car-experience ${active ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
+    <div className={`hero-car-experience view-${view} ${lights ? 'lights-on' : ''}`}>
+      <div className="hero-car-ambient ambient-left" />
+      <div className="hero-car-ambient ambient-right" />
       <div className="hero-car-orbit orbit-one" />
       <div className="hero-car-orbit orbit-two" />
       <div className="hero-car-label"><span>DESIGN STUDY / 001</span><b>SHERAZI MOTORS</b></div>
-      <button className="hero-car-stage" type="button" onClick={() => setActive(value => !value)} onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width - 0.5; const y = (event.clientY - rect.top) / rect.height - 0.5; event.currentTarget.style.setProperty("--tilt-x", `${x * 18}deg`); event.currentTarget.style.setProperty("--tilt-y", `${-y * 12}deg`); }} onPointerLeave={event => { event.currentTarget.style.setProperty("--tilt-x", "0deg"); event.currentTarget.style.setProperty("--tilt-y", "0deg"); }} aria-label="Move pointer to tilt or click to rotate the 3D car concept">
+      <button className="hero-car-stage" type="button" onClick={rotateView} onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width - 0.5; const y = (event.clientY - rect.top) / rect.height - 0.5; event.currentTarget.style.setProperty("--tilt-x", `${x * 12}deg`); event.currentTarget.style.setProperty("--tilt-y", `${-y * 8}deg`); }} onPointerLeave={event => { event.currentTarget.style.setProperty("--tilt-x", "0deg"); event.currentTarget.style.setProperty("--tilt-y", "0deg"); }} aria-label="Move pointer to tilt or tap to change the 3D car view">
         <span className="car-shadow" />
         <span className="car-model">
           <span className="car-roof" />
           <span className="car-window window-front" />
           <span className="car-window window-rear" />
+          <span className="car-windshield" />
           <span className="car-hood" />
           <span className="car-body" />
+          <span className="car-door-line door-front" />
+          <span className="car-door-line door-rear" />
+          <span className="car-door-handle handle-front" />
+          <span className="car-door-handle handle-rear" />
+          <span className="car-side-mirror" />
+          <span className="car-side-skirt" />
           <span className="car-grille" />
+          <span className="car-grille-frame" />
+          <span className="car-lower-intake" />
           <span className="car-headlight headlight-left" />
           <span className="car-headlight headlight-right" />
+          <span className="car-fog-light" />
           <span className="car-wheel wheel-front"><i /></span>
           <span className="car-wheel wheel-rear"><i /></span>
           <span className="car-reflection" />
         </span>
       </button>
       <div className="hero-car-controls">
-        <button type="button" onClick={() => setActive(value => !value)}><RotateCw size={15} /> {active ? 'RESET VIEW' : 'ROTATE VIEW'}</button>
+        <button type="button" onClick={rotateView}><RotateCw size={15} /> {view === 0 ? 'ROTATE VIEW' : view === 1 ? 'NEXT ANGLE' : 'RESET VIEW'}</button>
         <button type="button" onClick={() => setLights(value => !value)}><Sparkles size={15} /> {lights ? 'LIGHTS ON' : 'LIGHTS OFF'}</button>
       </div>
-      <div className="hero-car-caption"><Gauge size={15} /><span>INTERACTIVE 3D-STYLE CONCEPT</span><span className="caption-dot" /></div>
+      <div className="hero-car-caption"><Gauge size={15} /><span>INTERACTIVE DESIGN CONCEPT</span><span className="caption-dot" /></div>
     </div>
   );
 }
@@ -68,7 +81,7 @@ export function DetailStudio() {
               <ArrowUpRight size={18} />
             </button>
           ))}
-          <a className="detail-studio-link" href="#available-cars">Explore available vehicles <ArrowDown size={15} /></a>
+          <a className="detail-studio-link" href="#browse">Explore available vehicles <ArrowDown size={15} /></a>
         </div>
       </div>
     </section>
