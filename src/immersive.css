@@ -178,3 +178,49 @@
   .hero-car-showcase .hero-car-experience { width: 100%; height: 235px; margin: 0; }
   .hero-car-showcase .hero-car-stage { inset: 8% 0 17%; }
 }
+
+
+/* Premium concept-car art direction: metallic finish, body details and cinematic studio lighting */
+.hero-car-experience{isolation:isolate}
+.hero-car-ambient{position:absolute;z-index:-1;width:48%;height:58%;border-radius:50%;filter:blur(42px);opacity:.35;pointer-events:none}
+.ambient-left{left:5%;top:24%;background:radial-gradient(circle,rgba(203,176,128,.5),transparent 70%)}
+.ambient-right{right:4%;top:18%;background:radial-gradient(circle,rgba(106,151,151,.35),transparent 72%)}
+.hero-car-stage{overflow:visible}
+.car-model{filter:drop-shadow(0 28px 24px rgba(0,0,0,.42));transform-origin:50% 60%}
+.car-body{background:linear-gradient(155deg,#f1eee4 0%,#aeb9b4 12%,#657b7b 28%,#263d40 52%,#142629 75%,#091316 100%);box-shadow:inset 0 3px 8px rgba(255,255,255,.75),inset 0 -12px 22px rgba(0,0,0,.72),inset 18px 0 20px rgba(255,255,255,.12),0 7px 18px rgba(0,0,0,.28)}
+.car-hood{background:linear-gradient(150deg,#f4f0e5 0%,#aab9b5 24%,#496366 62%,#17292c 100%);box-shadow:inset 0 2px 4px rgba(255,255,255,.7),inset 0 -5px 10px rgba(0,0,0,.38)}
+.car-roof{background:linear-gradient(145deg,#f0eee4 0%,#879a98 32%,#2c4548 68%,#122326 100%);box-shadow:inset 0 2px 5px rgba(255,255,255,.75),0 -2px 0 rgba(255,255,255,.25)}
+.car-window{background:linear-gradient(135deg,#071316 0%,#183236 48%,#6d8582 100%);box-shadow:inset 0 0 12px rgba(139,183,184,.22),0 1px 0 rgba(255,255,255,.35)}
+.car-windshield{position:absolute;z-index:4;left:47%;bottom:107px;width:20%;height:43px;background:linear-gradient(130deg,rgba(9,23,27,.98),rgba(87,121,123,.88));clip-path:polygon(20% 0,100% 0,83% 100%,0 100%);border-top:1px solid rgba(255,255,255,.7);transform:skewX(-12deg) translateZ(28px)}
+.car-door-line{position:absolute;z-index:5;bottom:29px;width:1px;height:57px;background:linear-gradient(180deg,rgba(235,239,224,.62),rgba(8,17,19,.7));transform:translateZ(27px);opacity:.75}
+.door-front{left:54%}.door-rear{left:37%;height:49px;bottom:34px}
+.car-door-handle{position:absolute;z-index:6;bottom:70px;width:15px;height:3px;border-radius:4px;background:linear-gradient(90deg,#e6e2d5,#5c6c69);box-shadow:0 1px 3px rgba(0,0,0,.65);transform:translateZ(30px)}
+.handle-front{left:56%}.handle-rear{left:40%}
+.car-side-mirror{position:absolute;z-index:8;left:63%;bottom:88px;width:17px;height:10px;border-radius:70% 30% 55% 35%;background:linear-gradient(145deg,#e9e6da,#30484a 68%);transform:translateZ(37px) rotate(-12deg);box-shadow:2px 3px 4px rgba(0,0,0,.4)}
+.car-side-skirt{position:absolute;z-index:6;left:17%;right:18%;bottom:22px;height:7px;border-radius:0 0 9px 9px;background:linear-gradient(180deg,#657b79,#101c1f);transform:translateZ(25px);box-shadow:0 4px 6px rgba(0,0,0,.45)}
+.car-grille{width:31px;height:25px;background:repeating-linear-gradient(0deg,#080f12 0 2px,#8b9992 3px 4px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 2px 5px rgba(0,0,0,.5)}
+.car-grille-frame{position:absolute;z-index:6;right:5.2%;bottom:39px;width:35px;height:29px;border:1px solid rgba(221,213,190,.7);border-radius:4px;transform:translateZ(31px);pointer-events:none}
+.car-lower-intake{position:absolute;z-index:6;right:6%;bottom:29px;width:38px;height:5px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#10191b,#87918a,#10191b);transform:translateZ(32px)}
+.car-fog-light{position:absolute;z-index:7;right:8%;bottom:35px;width:8px;height:6px;border-radius:50%;background:#d7d8c7;box-shadow:0 0 5px rgba(255,241,196,.45);transform:translateZ(35px)}
+.car-wheel{background:radial-gradient(circle,#111b1d 0 17%,#c8c9bd 18% 23%,#465355 24% 29%,#111a1d 30% 46%,#080e10 48% 70%,#89918b 72% 75%,#101719 78%);box-shadow:inset 0 0 0 4px #89918b,0 9px 12px rgba(0,0,0,.6)}
+.car-wheel i{inset:15px;border:2px solid #e2dfd1;background:repeating-conic-gradient(from 8deg,#d7d8cc 0 5deg,#647171 6deg 10deg,#b9beb4 11deg 14deg);box-shadow:inset 0 0 0 4px #364547}
+.car-wheel i:after{content:'';position:absolute;inset:8px;border:2px solid #e6e2d4;border-radius:50%;background:radial-gradient(circle,#d8d5c8 0 18%,#4d5d5e 20% 55%,#1a292b 57%)}
+.car-headlight{height:12px;background:linear-gradient(90deg,#fffbe9,#fff2c5 45%,#b8c6c0);box-shadow:0 0 8px rgba(255,236,182,.4);filter:drop-shadow(0 0 4px rgba(255,236,182,.35))}
+.lights-on .car-headlight{box-shadow:0 0 28px 12px rgba(255,225,157,.55);filter:drop-shadow(0 0 18px #fff0c1)}
+.lights-on .car-fog-light{box-shadow:0 0 16px 6px rgba(255,232,178,.55)}
+.car-reflection{height:3px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.92),rgba(208,188,148,.7),transparent);filter:blur(1px)}
+.hero-car-experience:after{content:'';position:absolute;z-index:0;left:12%;right:12%;bottom:14%;height:24px;border-radius:50%;background:radial-gradient(ellipse,rgba(193,169,124,.2),transparent 72%);filter:blur(9px);pointer-events:none}
+.hero-car-experience.view-0 .hero-car-stage .car-model{transform:scale(.88) rotateX(calc(9deg + var(--tilt-y,0deg))) rotateY(calc(-19deg + var(--tilt-x,0deg))) rotateZ(-1deg)}
+.hero-car-experience.view-1 .hero-car-stage .car-model{transform:scale(.88) rotateX(calc(7deg + var(--tilt-y,0deg))) rotateY(calc(4deg + var(--tilt-x,0deg))) rotateZ(0deg) translateY(-3px)}
+.hero-car-experience.view-2 .hero-car-stage .car-model{transform:scale(.88) rotateX(calc(14deg + var(--tilt-y,0deg))) rotateY(calc(28deg + var(--tilt-x,0deg))) rotateZ(1deg) translateY(-5px)}
+@media(max-width:950px) and (min-width:681px){
+ .hero-car-experience.view-0 .hero-car-stage .car-model{transform:scale(.76) rotateX(calc(9deg + var(--tilt-y,0deg))) rotateY(calc(-19deg + var(--tilt-x,0deg)))}
+ .hero-car-experience.view-1 .hero-car-stage .car-model{transform:scale(.76) rotateX(calc(7deg + var(--tilt-y,0deg))) rotateY(calc(4deg + var(--tilt-x,0deg)))}
+ .hero-car-experience.view-2 .hero-car-stage .car-model{transform:scale(.76) rotateX(calc(14deg + var(--tilt-y,0deg))) rotateY(calc(28deg + var(--tilt-x,0deg)))}
+}
+@media(max-width:680px){
+ .hero-car-experience.view-0 .hero-car-stage .car-model{transform:scale(.62) rotateX(calc(9deg + var(--tilt-y,0deg))) rotateY(calc(-19deg + var(--tilt-x,0deg))) rotateZ(-1deg)}
+ .hero-car-experience.view-1 .hero-car-stage .car-model{transform:scale(.62) rotateX(calc(7deg + var(--tilt-y,0deg))) rotateY(calc(4deg + var(--tilt-x,0deg)))}
+ .hero-car-experience.view-2 .hero-car-stage .car-model{transform:scale(.62) rotateX(calc(14deg + var(--tilt-y,0deg))) rotateY(calc(28deg + var(--tilt-x,0deg))) rotateZ(1deg)}
+}
+@media(prefers-reduced-motion:reduce){.hero-car-ambient{display:none}}
