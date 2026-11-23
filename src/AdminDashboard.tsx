@@ -15,6 +15,7 @@ export default function AdminDashboard() {
   const [editId, setEditId] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
+  const [accessIssue, setAccessIssue] = useState('');
 
   const load = async () => {
     try {
@@ -29,7 +30,7 @@ export default function AdminDashboard() {
     let live = true;
     api.get('/api/admin/session')
       .then(response => { if (live) setUser(response.data.user?.email || ''); })
-      .catch(() => { if (live) setUser(''); })
+      .catch(error => { if (live) { setUser(''); setAccessIssue(error instanceof Error ? error.message : 'Secure admin access is not configured yet.'); } })
       .finally(() => { if (live) setChecking(false); });
     return () => { live = false; };
   }, []);
@@ -84,7 +85,7 @@ export default function AdminDashboard() {
   const logout = () => { window.location.href = '/api/access/logout'; };
 
   if (checking) return <div className="admin-loading">Checking secure access…</div>;
-  if (!user) return <main className="admin-gate"><a href="/" className="admin-back"><ArrowLeft size={16} /> Sherazi Motors</a><section className="admin-login"><div className="admin-icon"><ShieldCheck /></div><small>SHERAZI MOTORS · PRIVATE AREA</small><h1>Welcome back.</h1><p>Sign in with your authorised account to manage vehicle listings.</p><button className="admin-main-button" onClick={login}>Sign in securely</button>{message && <p>{message}</p>}</section></main>;
+  if (!user) return <main className="admin-gate"><a href="/" className="admin-back"><ArrowLeft size={16} /> Sherazi Motors</a><section className="admin-login"><div className="admin-icon"><ShieldCheck /></div><small>SHERAZI MOTORS · PRIVATE AREA</small><h1>{accessIssue ? 'Secure access setup needed.' : 'Welcome back.'}</h1><p>{accessIssue ? 'The private dashboard is protected. Cloudflare Access must be configured by the site owner before sign-in can continue.' : 'Sign in with your authorised account to manage vehicle listings.'}</p>{accessIssue ? <p role="alert">{accessIssue}</p> : <button className="admin-main-button" onClick={login}>Sign in securely</button>}{message && <p>{message}</p>}</section></main>;
   if (user.toLowerCase() !== OWNER) return <main className="admin-gate"><section className="admin-login"><h1>Not authorised.</h1><p>This account cannot manage Sherazi Motors listings.</p><button className="admin-main-button" onClick={logout}>Sign out <LogOut size={16} /></button></section></main>;
 
   return <main className="admin-wrap">
