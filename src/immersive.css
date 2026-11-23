@@ -440,3 +440,187 @@
   .hero-car-showcase .hero-car-experience { height: 235px; margin: 0; width: 100%; }
   .hero-car-showcase .hero-car-controls { bottom: 14px; }
 }
+
+
+/* Cinematic showroom reveal — final layout override */
+.hero-car-showcase {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  padding: clamp(30px,5vw,62px) clamp(20px,7vw,100px) 28px !important;
+  background:
+    radial-gradient(ellipse at 50% 72%, rgba(102,132,127,.30), transparent 48%),
+    linear-gradient(180deg,#0b1417 0%,#172629 48%,#091114 100%) !important;
+  border: 0 !important;
+  overflow: hidden;
+}
+.hero-car-showcase:after {
+  content: "SHERAZI  /  AUTOMOTIVE EXPERIENCE";
+  display: block;
+  order: 4;
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(211,185,140,.18);
+  color: rgba(215,198,164,.58);
+  font-size: 7px;
+  letter-spacing: .24em;
+}
+.showroom-heading {
+  width: 100%;
+  margin: 0 0 30px;
+  padding: 0 0 15px;
+}
+.hero-car-showcase-copy {
+  width: 100%;
+  max-width: 100% !important;
+  display: grid;
+  grid-template-columns: 1fr minmax(240px,.7fr);
+  column-gap: 35px;
+  align-items: end;
+  padding: 0 !important;
+  margin: 0 0 8px;
+}
+.hero-car-showcase-copy .eyebrow { grid-column: 1 / -1; }
+.hero-car-showcase-copy h2 {
+  grid-column: 1;
+  margin: 12px 0 0 !important;
+  font-size: clamp(38px,5vw,68px) !important;
+}
+.hero-car-showcase-copy p {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0 0 5px;
+  max-width: 390px !important;
+}
+.showroom-facts {
+  grid-column: 2;
+  grid-row: 3;
+  margin: 14px 0 0 !important;
+  padding: 12px 0 !important;
+}
+.showroom-explore-link { grid-column: 1; grid-row: 3; align-self: center; }
+.showroom-viewer-wrap {
+  width: 100%;
+  min-height: 0;
+  margin-top: 14px;
+  padding: 15px 20px 12px;
+  border: 1px solid rgba(211,185,140,.2);
+  background:
+    radial-gradient(ellipse at 50% 62%,rgba(133,162,155,.20),transparent 58%),
+    linear-gradient(180deg,rgba(32,48,49,.54),rgba(5,12,14,.38));
+  box-shadow: 0 35px 90px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.04);
+}
+.showroom-viewer-top { padding-bottom: 10px; }
+.showroom-viewer-bottom { padding-top: 8px; }
+.hero-car-showcase .hero-car-experience {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: clamp(330px,39vw,510px) !important;
+  margin: 0 auto !important;
+  opacity: 1;
+  transform: none !important;
+}
+.hero-car-showcase .hero-car-stage {
+  inset: 2% 0 16% !important;
+  overflow: visible;
+}
+.hero-car-showcase .car-model {
+  width: 100%;
+  height: 220px;
+  transform: scale(1.18) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg) !important;
+  transform-origin: 50% 58%;
+}
+.hero-car-showcase .hero-car-experience.is-rotating .car-model {
+  animation: sherazi-car-showroom-spin 1.35s cubic-bezier(.2,.72,.25,1) both !important;
+}
+@keyframes sherazi-car-showroom-spin {
+  0% { transform: scale(1.18) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg); }
+  35% { transform: scale(1.26) rotateX(13deg) rotateY(105deg) translateY(-10px); }
+  72% { transform: scale(1.26) rotateX(10deg) rotateY(245deg) translateY(-10px); }
+  100% { transform: scale(1.18) rotateX(9deg) rotateY(341deg) rotateZ(-1deg); }
+}
+.hero-car-showcase .hero-car-controls { bottom: 12px !important; left: 2% !important; }
+.hero-car-showcase .hero-car-caption { bottom: 0 !important; right: 2% !important; }
+.hero-car-showcase .hero-car-label { top: 3%; left: 3%; right: 3%; }
+.hero-car-showcase .hero-car-orbit { inset: 9% 12%; }
+.hero-car-showcase .hero-car-experience:before { inset: 17% 12%; }
+@media (max-width: 680px) {
+  .hero-car-showcase {
+    padding: 27px 5% 22px !important;
+  }
+  .showroom-heading {
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+  .showroom-kicker,.showroom-edition {
+    font-size: 6px;
+    letter-spacing: .11em;
+    line-height: 1.6;
+  }
+  .hero-car-showcase-copy {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 8px;
+  }
+  .hero-car-showcase-copy .eyebrow { margin-bottom: 8px; }
+  .hero-car-showcase-copy h2 {
+    margin: 8px 0 10px !important;
+    font-size: clamp(36px,10vw,48px) !important;
+    line-height: 1.02;
+  }
+  .hero-car-showcase-copy p {
+    max-width: 100% !important;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.75;
+  }
+  .showroom-facts {
+    width: 100%;
+    margin: 15px 0 10px !important;
+    padding: 11px 0 !important;
+  }
+  .showroom-facts b { font-size: 18px; }
+  .showroom-facts span { font-size: 6px; }
+  .showroom-explore-link { margin: 4px 0 10px; }
+  .showroom-viewer-wrap {
+    margin-top: 6px;
+    padding: 11px 9px 10px;
+  }
+  .showroom-viewer-top,.showroom-viewer-bottom {
+    font-size: 5px;
+    letter-spacing: .08em;
+    gap: 5px;
+  }
+  .hero-car-showcase .hero-car-experience {
+    height: 360px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .hero-car-showcase .hero-car-stage { inset: 0 0 17% !important; }
+  .hero-car-showcase .car-model {
+    width: 100%;
+    height: 205px;
+    transform: scale(1.13) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg) !important;
+  }
+  .hero-car-showcase .hero-car-experience.is-rotating .car-model {
+    animation: sherazi-car-showroom-spin-mobile 1.35s cubic-bezier(.2,.72,.25,1) both !important;
+  }
+  @keyframes sherazi-car-showroom-spin-mobile {
+    0% { transform: scale(1.13) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg); }
+    35% { transform: scale(1.2) rotateX(13deg) rotateY(105deg) translateY(-8px); }
+    72% { transform: scale(1.2) rotateX(10deg) rotateY(245deg) translateY(-8px); }
+    100% { transform: scale(1.13) rotateX(9deg) rotateY(341deg) rotateZ(-1deg); }
+  }
+  .hero-car-showcase .hero-car-controls { bottom: 9px !important; left: 1% !important; }
+  .hero-car-showcase .hero-car-controls button { padding: 9px 10px; font-size: 6px; }
+  .hero-car-showcase .hero-car-caption { right: 1% !important; font-size: 5px; }
+  .hero-car-showcase:after { margin-top: 13px; }
+}
