@@ -197,13 +197,27 @@ function App() {
           </a>
         </section>
 
-        <section className="hero-car-showcase" aria-label="Interactive 3D car concept">
-          <div className="hero-car-showcase-copy">
-            <div className="eyebrow light"><span /> INTERACTIVE DESIGN STUDIO</div>
-            <h2>Take a closer<br /><em>look around.</em></h2>
-            <p>Explore our interactive car concept below. Move your pointer or tap the controls to change its view and lighting.</p>
+        <section className="hero-car-showcase" aria-label="Sherazi Motors virtual car showroom">
+          <div className="showroom-heading">
+            <div className="showroom-kicker"><span className="showroom-live-dot" /> SHERAZI MOTORS / VIRTUAL SHOWROOM</div>
+            <div className="showroom-edition">DESIGN EXPERIENCE <b>01 — 01</b></div>
           </div>
-          <HeroCarExperience />
+          <div className="hero-car-showcase-copy">
+            <div className="eyebrow light"><span /> THE ART OF THE AUTOMOBILE</div>
+            <h2>Every angle.<br /><em>A closer connection.</em></h2>
+            <p>Step into our interactive design studio. Explore the silhouette, discover the details and experience the presence of a car before you visit.</p>
+            <div className="showroom-facts">
+              <div><b>360°</b><span>VIEW EXPERIENCE</span></div>
+              <div><b>01</b><span>CONCEPT VEHICLE</span></div>
+              <div><b>LIVE</b><span>LIGHT INTERACTION</span></div>
+            </div>
+            <a className="showroom-explore-link" href="#browse">DISCOVER OUR VEHICLES <ArrowUpRight size={15} /></a>
+          </div>
+          <div className="showroom-viewer-wrap">
+            <div className="showroom-viewer-top"><span>EXTERIOR / SIDE PROFILE</span><span>MOVE · ROTATE · EXPLORE</span></div>
+            <HeroCarExperience />
+            <div className="showroom-viewer-bottom"><span><i /> STUDIO LIGHTING ACTIVE</span><span>SHERAZI DESIGN LAB</span></div>
+          </div>
         </section>
 
         <section className="section browse-section" id="browse">
