@@ -624,3 +624,44 @@
   .hero-car-showcase .hero-car-caption { right: 1% !important; font-size: 5px; }
   .hero-car-showcase:after { margin-top: 13px; }
 }
+
+
+/* Real-time 3D sports coupe viewer */
+.hero-car-showcase .hero-car-experience {
+  height: clamp(390px, 43vw, 560px) !important;
+}
+.hero-car-showcase .real-car-stage {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: 100% !important;
+  height: clamp(320px, 38vw, 470px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: radial-gradient(ellipse at 50% 72%,rgba(145,173,171,.12),transparent 58%) !important;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.hero-car-showcase .real-car-stage:active { cursor: grabbing; }
+.hero-car-showcase .car-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: pan-y;
+}
+.hero-car-showcase .car-3d-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.hero-car-showcase .hero-car-controls { z-index: 5; }
+@media (max-width:680px) {
+  .hero-car-showcase .hero-car-experience { height: 390px !important; }
+  .hero-car-showcase .real-car-stage { height: 320px !important; }
+  .hero-car-showcase .hero-car-controls { bottom: 5px !important; }
+}
