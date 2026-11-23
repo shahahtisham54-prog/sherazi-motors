@@ -2,20 +2,28 @@ import type { PluginData } from "@cloudflare/pages-plugin-cloudflare-access";
 interface Env { DB: D1Database }
 const OWNER = "as3703195@gmail.com";
 const allowed = (data: PluginData) => String(data.cloudflareAccess.JWT.payload.email || "").toLowerCase() === OWNER;
-
+function photoList(value: unknown): string[] {
+  try {
+    const parsed = typeof value === "string" ? JSON.parse(value) : value;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item): item is string => typeof item === "string" && /^[a-f0-9-]+\.(?:jpg|jpeg|png|webp)$/i.test(item)).slice(0, 8);
+  } catch { return []; }
+}
 export const onRequestGet: PagesFunction<Env, string, PluginData> = async ({ data, env }) => {
   if (!allowed(data)) return Response.json({ error: "Not authorised." }, { status: 403 });
   try {
     const result = await env.DB.prepare(
       "SELECT id, make, model, year, mileage, price, transmission, fuel, description, status, photos FROM vehicles ORDER BY created_at DESC LIMIT 100"
     ).all();
-    return Response.json({ vehicles: (result.results || []).map((row: Record<string, unknown>) => ({ ...row, photoUrls: [] })) });
+    return Response.json({ vehicles: (result.results || []).map((row: Record<string, unknown>) => {
+      const photos = photoList(row.photos);
+      return { ...row, photos, photoUrls: photos.map(key => "/media/" + key) };
+    }) });
   } catch (error) {
     console.error("Admin vehicle read failed", error);
     return Response.json({ error: "Could not load vehicle listings." }, { status: 500 });
   }
 };
-
 export const onRequestPost: PagesFunction<Env, string, PluginData> = async ({ data, env, request }) => {
   if (!allowed(data)) return Response.json({ error: "Not authorised." }, { status: 403 });
   let body: Record<string, unknown>;
