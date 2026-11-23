@@ -10,10 +10,11 @@ const detailCards = [
 
 export function HeroCarExperience() {
   const [view, setView] = useState(0);
+  const [rotating, setRotating] = useState(false);
   const [lights, setLights] = useState(false);
-  const rotateView = () => setView(current => (current + 1) % 3);
+  const rotateView = () => { setView(current => (current + 1) % 3); setRotating(true); window.setTimeout(() => setRotating(false), 1250); };
   return (
-    <div className={`hero-car-experience view-${view} ${lights ? 'lights-on' : ''}`}>
+    <div className={`hero-car-experience view-${view} ${rotating ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
       <div className="hero-car-ambient ambient-left" />
       <div className="hero-car-ambient ambient-right" />
       <div className="hero-car-orbit orbit-one" />
