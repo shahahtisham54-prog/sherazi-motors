@@ -467,7 +467,7 @@ function App() {
                   {submitting ? 'Saving your enquiry...' : 'Submit enquiry'} <ArrowRight size={17} />
                 </button>
                 <small className="form-disclaimer">
-                  Your enquiry is saved securely and an email alert is sent to the Sherazi Motors account when available. You can also send the same details to us on WhatsApp after submitting.
+                  Your enquiry is saved securely. Email notifications are not enabled yet. You can send the same details directly to Sherazi Motors on WhatsApp after submitting.
                 </small>
               </>
             )}
