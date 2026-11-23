@@ -1,21 +1,17 @@
-import { generateLoginURL } from "@cloudflare/pages-plugin-cloudflare-access/api";
-interface Env { CF_ACCESS_TEAM_DOMAIN: string; CF_ACCESS_AUD: string }
-
-export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
-  if (!env.CF_ACCESS_TEAM_DOMAIN || !env.CF_ACCESS_AUD) {
-    return new Response("Admin sign-in is not configured yet.", { status: 503 });
+import { createSession, sessionCookie } from "../../lib/admin-auth";
+interface Env { ADMIN_PASSWORD?: string; ADMIN_SESSION_SECRET?: string }
+export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  if (!env.ADMIN_PASSWORD || !env.ADMIN_SESSION_SECRET) {
+    return Response.json({ error: "Admin login is not configured. Add ADMIN_PASSWORD and ADMIN_SESSION_SECRET in Cloudflare Pages settings." }, { status: 503 });
   }
-  const current = new URL(request.url);
-  const requested = current.searchParams.get("returnTo") || "/";
-  let redirectURL = new URL("/", current.origin).toString();
-  try {
-    const candidate = new URL(requested, current.origin);
-    if (candidate.origin === current.origin) redirectURL = candidate.toString();
-  } catch { /* use safe same-origin default */ }
-  const loginURL = generateLoginURL({
-    redirectURL,
-    domain: env.CF_ACCESS_TEAM_DOMAIN,
-    aud: env.CF_ACCESS_AUD
+  let body: { password?: string };
+  try { body = await request.json() as { password?: string }; } catch { return Response.json({ error: "Invalid login request." }, { status: 400 }); }
+  const supplied = String(body.password || "");
+  if (!supplied || supplied.length > 256 || supplied !== env.ADMIN_PASSWORD) {
+    return Response.json({ error: "Incorrect password." }, { status: 401 });
+  }
+  const token = await createSession(env.ADMIN_SESSION_SECRET);
+  return new Response(JSON.stringify({ ok: true, user: { email: "as3703195@gmail.com" } }), {
+    headers: { "Content-Type": "application/json", "Set-Cookie": sessionCookie(token) }
   });
-  return Response.redirect(loginURL, 302);
 };
