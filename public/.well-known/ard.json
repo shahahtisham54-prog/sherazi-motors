@@ -1,0 +1,16 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:sherazi-motors.pages.dev:catalog:main",
+      "displayName": "Sherazi Motors Website",
+      "type": "application/ai-catalog+json",
+      "url": "https://sherazi-motors.pages.dev/",
+      "representativeQueries": [
+        "Find used cars available from Sherazi Motors in Rawalpindi",
+        "Browse vehicle categories at Sherazi Motors",
+        "Contact Sherazi Motors about a vehicle or arrange a viewing"
+      ]
+    }
+  ]
+}
