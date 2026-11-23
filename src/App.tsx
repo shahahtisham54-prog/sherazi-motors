@@ -175,7 +175,6 @@ function App() {
               </a>
             </div>
           </div>
-          <HeroCarExperience />
           <div className="hero-stamp">
             <span>SHERAZI</span>
             <b>MOTORS</b>
@@ -196,6 +195,15 @@ function App() {
           <a href="#about" aria-label="Learn about Sherazi Motors">
             <ArrowUpRight size={21} />
           </a>
+        </section>
+
+        <section className="hero-car-showcase" aria-label="Interactive 3D car concept">
+          <div className="hero-car-showcase-copy">
+            <div className="eyebrow light"><span /> INTERACTIVE DESIGN STUDIO</div>
+            <h2>Take a closer<br /><em>look around.</em></h2>
+            <p>Explore our interactive car concept below. Move your pointer or tap the controls to change its view and lighting.</p>
+          </div>
+          <HeroCarExperience />
         </section>
 
         <section className="section browse-section" id="browse">
