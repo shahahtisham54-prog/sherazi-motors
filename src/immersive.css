@@ -712,3 +712,37 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-car-showcase .real-car-stage:before { animation:none; }
 }
+
+
+/* Clear separation between the photographic hero and the interactive showroom */
+.hero-car-showcase {
+  position: relative;
+  margin-top: 0 !important;
+  border-top: 1px solid rgba(190,164,121,.38) !important;
+  background:
+    radial-gradient(ellipse at 54% 62%,rgba(93,126,132,.24),transparent 52%),
+    linear-gradient(145deg,#142327 0%,#0a1418 62%,#101c20 100%) !important;
+}
+.hero-car-showcase .showroom-heading {
+  padding-top: 3px;
+}
+.hero-car-showcase .showroom-viewer-wrap {
+  background:
+    radial-gradient(ellipse at 50% 62%,rgba(149,184,194,.17),transparent 58%),
+    linear-gradient(145deg,rgba(27,45,51,.88),rgba(5,12,16,.94));
+  border-color: rgba(212,184,139,.34);
+}
+.hero-car-showcase .real-car-stage {
+  min-height: 350px;
+}
+.hero-car-showcase .car-3d-canvas {
+  filter: drop-shadow(0 16px 24px rgba(0,0,0,.25));
+}
+.hero-car-showcase .hero-car-controls button:nth-child(2) {
+  background: rgba(213,184,133,.16);
+  border-color: rgba(237,211,163,.7);
+  color: #fff0cf;
+}
+@media (max-width:680px) {
+  .hero-car-showcase .real-car-stage { min-height: 300px; }
+}
