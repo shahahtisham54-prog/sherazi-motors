@@ -33,3 +33,5 @@ if (mount) {
 } else {
   console.error('Sherazi Motors root mount element is missing.');
 }
+
+// Keep the render boundary diagnostic visible during the production verification pass.
