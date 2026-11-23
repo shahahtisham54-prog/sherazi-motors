@@ -18,5 +18,15 @@ export const api = {
   get: <T = any>(url: string) => request<T>("GET", url),
   post: <T = any>(url: string, body?: unknown) => request<T>("POST", url, body),
   put: <T = any>(url: string, body?: unknown) => request<T>("PUT", url, body),
-  delete: <T = any>(url: string) => request<T>("DELETE", url)
+  delete: <T = any>(url: string) => request<T>("DELETE", url),
+  upload: async <T = any>(url: string, form: FormData): Promise<ApiResponse<T>> => {
+    const response = await fetch(url, { method: "POST", credentials: "same-origin", body: form, headers: { Accept: "application/json" } });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = new Error(data?.error || "The upload could not be completed.") as Error & { response?: { status: number; data: unknown } };
+      error.response = { status: response.status, data };
+      throw error;
+    }
+    return { data };
+  }
 };
