@@ -136,3 +136,45 @@
   .hero-stamp { z-index: 4; }
   .hero-bottom { z-index: 4; }
 }
+
+
+/* Keep the photographic homepage hero completely clear; place the interactive concept in its own showroom band. */
+.hero-car-showcase {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, .72fr) minmax(0, 1.28fr);
+  align-items: center;
+  gap: 30px;
+  min-height: 390px;
+  padding: 44px 8%;
+  overflow: hidden;
+  color: #f5f0e5;
+  background: radial-gradient(ellipse at 72% 48%, #34494a 0%, #172326 48%, #0d171a 100%);
+  border-top: 1px solid rgba(211,185,140,.18);
+  border-bottom: 1px solid rgba(211,185,140,.18);
+}
+.hero-car-showcase-copy { position: relative; z-index: 2; max-width: 360px; }
+.hero-car-showcase-copy h2 { margin: 20px 0 14px; font: 500 clamp(34px,4vw,54px)/1.05 'Playfair Display',serif; letter-spacing: -.04em; }
+.hero-car-showcase-copy h2 em { color: #d0b17a; }
+.hero-car-showcase-copy p { max-width: 320px; color: #b9c3bd; font-size: 12px; line-height: 1.9; }
+.hero-car-showcase .hero-car-experience {
+  position: relative;
+  inset: auto;
+  right: auto;
+  top: auto;
+  width: 100%;
+  max-width: 680px;
+  height: 330px;
+  margin: 0 auto;
+  transform: none;
+  opacity: 1;
+}
+.hero-car-showcase .hero-car-stage { inset: 8% 0 13%; }
+.hero-car-showcase .hero-car-controls { bottom: 22px; }
+@media (max-width: 680px) {
+  .hero-car-showcase { grid-template-columns: 1fr; gap: 0; min-height: 0; padding: 42px 6% 28px; }
+  .hero-car-showcase-copy { max-width: 100%; }
+  .hero-car-showcase-copy h2 { font-size: 38px; }
+  .hero-car-showcase .hero-car-experience { width: 100%; height: 235px; margin: 0; }
+  .hero-car-showcase .hero-car-stage { inset: 8% 0 17%; }
+}
