@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { ArrowDown, ArrowUpRight, Gauge, RotateCw, Sparkles } from 'lucide-react';
+import { lazy, Suspense, useState } from 'react';
+import { ArrowDown, ArrowUpRight, Cuboid, Gauge, RotateCw, Sparkles } from 'lucide-react';
 import './immersive.css';
-import { CarModel3D } from './CarModel3D';
+const CarModel3D = lazy(() => import('./CarModel3D').then(module => ({ default: module.CarModel3D })));
 
 const detailCards = [
   { number: '01', title: 'Sculpted bodywork', copy: 'A closer look at the lines, stance and proportions that define every vehicle.', icon: 'BODY' },
@@ -12,6 +12,7 @@ const detailCards = [
 export function HeroCarExperience() {
   const [rotating, setRotating] = useState(false);
   const [lights, setLights] = useState(true);
+  const [modelLoaded, setModelLoaded] = useState(false);
   const rotateView = () => { if (rotating) return; setRotating(true); window.setTimeout(() => setRotating(false), 2300); };
   return (
     <div className={`hero-car-experience view-0 ${rotating ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
@@ -21,12 +22,24 @@ export function HeroCarExperience() {
       <div className="hero-car-orbit orbit-two" />
       <div className="hero-car-label"><span>DESIGN STUDY / 001</span><b>SHERAZI MOTORS</b></div>
       <div className="hero-car-stage real-car-stage">
-        <CarModel3D lightsOn={lights} rotating={rotating} />
+        {modelLoaded ? (
+          <Suspense fallback={<div className="car-model-loading">Preparing the 3D showroom…</div>}>
+            <CarModel3D lightsOn={lights} rotating={rotating} />
+          </Suspense>
+        ) : (
+          <button className="car-model-load" type="button" onClick={() => setModelLoaded(true)}>
+            <Cuboid size={20} />
+            <span>LOAD INTERACTIVE 3D VIEW</span>
+            <small>Optional · loads when you choose</small>
+          </button>
+        )}
       </div>
-      <div className="hero-car-controls">
-        <button type="button" onClick={rotateView}><RotateCw size={15} /> {rotating ? 'ROTATING...' : 'ROTATE VIEW'}</button>
-        <button type="button" onClick={() => setLights(value => !value)}><Sparkles size={15} /> {lights ? 'LIGHTS ON' : 'LIGHTS OFF'}</button>
-      </div>
+      {modelLoaded && (
+        <div className="hero-car-controls">
+          <button type="button" onClick={rotateView}><RotateCw size={15} /> {rotating ? 'ROTATING...' : 'ROTATE VIEW'}</button>
+          <button type="button" onClick={() => setLights(value => !value)}><Sparkles size={15} /> {lights ? 'LIGHTS ON' : 'LIGHTS OFF'}</button>
+        </div>
+      )}
       <div className="hero-car-caption"><Gauge size={15} /><span>INTERACTIVE DESIGN CONCEPT</span><span className="caption-dot" /></div>
     </div>
   );
