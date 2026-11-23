@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 type Props = { lightsOn: boolean; rotating: boolean };
 
@@ -42,15 +43,15 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     const chrome = new THREE.MeshStandardMaterial({ color: 0xb9c7c8, metalness: .95, roughness: .16 });
     const rubber = new THREE.MeshStandardMaterial({ color: 0x090c0e, roughness: .88 });
     const rimMat = new THREE.MeshStandardMaterial({ color: 0xc8d0d0, metalness: .95, roughness: .2 });
-    const body = new THREE.Mesh(new THREE.BoxGeometry(4.15, .58, 1.78, 8, 3, 4), paint);
+    const body = new THREE.Mesh(new RoundedBoxGeometry(4.15, .58, 1.78, 6, .18), paint);
     body.position.y = .72; body.castShadow = true; car.add(body);
-    const hood = new THREE.Mesh(new THREE.BoxGeometry(1.28, .16, 1.72, 4, 2, 4), paint);
+    const hood = new THREE.Mesh(new RoundedBoxGeometry(1.28, .16, 1.72, 5, .08), paint);
     hood.position.set(1.43, 1.02, 0); hood.castShadow = true; car.add(hood);
     const rear = new THREE.Mesh(new THREE.BoxGeometry(.78, .22, 1.7), paint);
     rear.position.set(-1.62, 1.02, 0); car.add(rear);
-    const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.95, .68, 1.43, 6, 3, 4), paint);
+    const cabin = new THREE.Mesh(new RoundedBoxGeometry(1.95, .68, 1.43, 6, .15), paint);
     cabin.position.set(-.12, 1.28, 0); cabin.rotation.z = -.04; cabin.castShadow = true; car.add(cabin);
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.28, .09, 1.38), paint);
+    const roof = new THREE.Mesh(new RoundedBoxGeometry(1.28, .09, 1.38, 5, .045), paint);
     roof.position.set(-.18, 1.66, 0); car.add(roof);
     const windshield = new THREE.Mesh(new THREE.BoxGeometry(.12, .53, 1.37), glass);
     windshield.position.set(.91, 1.31, 0); windshield.rotation.z = -.25; car.add(windshield);
