@@ -16,7 +16,7 @@ export function HeroCarExperience() {
       <div className="hero-car-orbit orbit-one" />
       <div className="hero-car-orbit orbit-two" />
       <div className="hero-car-label"><span>DESIGN STUDY / 001</span><b>SHERAZI MOTORS</b></div>
-      <button className="hero-car-stage" type="button" onClick={() => setActive(value => !value)} aria-label="Rotate the 3D car concept">
+      <button className="hero-car-stage" type="button" onClick={() => setActive(value => !value)} onPointerMove={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width - 0.5; const y = (event.clientY - rect.top) / rect.height - 0.5; event.currentTarget.style.setProperty("--tilt-x", `${x * 18}deg`); event.currentTarget.style.setProperty("--tilt-y", `${-y * 12}deg`); }} onPointerLeave={event => { event.currentTarget.style.setProperty("--tilt-x", "0deg"); event.currentTarget.style.setProperty("--tilt-y", "0deg"); }} aria-label="Move pointer to tilt or click to rotate the 3D car concept">
         <span className="car-shadow" />
         <span className="car-model">
           <span className="car-roof" />
