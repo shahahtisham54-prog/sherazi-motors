@@ -6,7 +6,7 @@ type Props = { lightsOn: boolean; rotating: boolean };
 
 export function CarModel3D({ lightsOn, rotating }: Props) {
   const host = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<{ scene: THREE.Scene; camera: THREE.PerspectiveCamera; renderer: THREE.WebGLRenderer; car: THREE.Group; lights: THREE.Mesh[] } | null>(null);
+  const sceneRef = useRef<{ scene: THREE.Scene; camera: THREE.PerspectiveCamera; renderer: THREE.WebGLRenderer; car: THREE.Group; lights: THREE.Mesh[]; beams: THREE.Mesh[]; spots: THREE.SpotLight[]; streaks: THREE.Mesh[] } | null>(null);
 
   useEffect(() => {
     const el = host.current;
@@ -66,12 +66,18 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     frontGrille.position.set(2.105,.67,0); car.add(frontGrille);
     const grilleLine = new THREE.Mesh(new THREE.BoxGeometry(.075,.035,1.13), chrome);
     grilleLine.position.set(2.14,.55,0); car.add(grilleLine);
-    const lamps: THREE.Mesh[] = [];
+    const lamps: THREE.Mesh[] = [];\n    const beams: THREE.Mesh[] = [];\n    const spots: THREE.SpotLight[] = [];\n    const tailLamps: THREE.Mesh[] = [];
     [-.62,.62].forEach(z => {
-      const lamp = new THREE.Mesh(new THREE.BoxGeometry(.07,.13,.46), new THREE.MeshStandardMaterial({ color: 0xe9f5ff, emissive: 0xc8e8ff, emissiveIntensity: .25 }));
-      lamp.position.set(2.12, .98, z); car.add(lamp); lamps.push(lamp);
-      const tail = new THREE.Mesh(new THREE.BoxGeometry(.06,.12,.38), new THREE.MeshStandardMaterial({ color: 0x8c1018, emissive: 0x9d1018, emissiveIntensity: .4 }));
-      tail.position.set(-2.1,.91,z); car.add(tail);
+      const lamp = new THREE.Mesh(new RoundedBoxGeometry(.055,.12,.5,4,.035), new THREE.MeshStandardMaterial({ color: 0xf4fbff, emissive: 0xc9edff, emissiveIntensity: 5.5, toneMapped: false }));
+      lamp.position.set(2.14, .99, z); car.add(lamp); lamps.push(lamp);
+      const glow = new THREE.Mesh(new THREE.PlaneGeometry(.95,.34), new THREE.MeshBasicMaterial({ color: 0xbde9ff, transparent:true, opacity:.22, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide }));
+      glow.position.set(2.19,.98,z); glow.rotation.y=Math.PI/2; car.add(glow); beams.push(glow);
+      const spot = new THREE.SpotLight(0xd7efff, 0, 13, Math.PI/7, .55, 1.2);
+      spot.position.set(2.18,.98,z); spot.target.position.set(7,.35,z*1.4); car.add(spot,spot.target); spots.push(spot);
+      const tail = new THREE.Mesh(new RoundedBoxGeometry(.055,.13,.42,4,.035), new THREE.MeshStandardMaterial({ color: 0xff2635, emissive: 0xff071b, emissiveIntensity: 4.2, toneMapped:false }));
+      tail.position.set(-2.13,.91,z); car.add(tail); tailLamps.push(tail);
+      const tailGlow = new THREE.Mesh(new THREE.PlaneGeometry(.7,.28), new THREE.MeshBasicMaterial({color:0xff1828,transparent:true,opacity:.26,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+      tailGlow.position.set(-2.17,.91,z); tailGlow.rotation.y=Math.PI/2; car.add(tailGlow); beams.push(tailGlow);
     });
     const wheelGroup = new THREE.Group();
     [-1.28,1.28].forEach(x => [-.91,.91].forEach(z => {
@@ -88,21 +94,31 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     }));
     const underGlow = new THREE.PointLight(0x83c5d6, 1.2, 5);
     underGlow.position.set(0,.2,0); car.add(underGlow);
+    const streakGroup = new THREE.Group(); scene.add(streakGroup);
+    const streaks: THREE.Mesh[] = [];
+    for(let i=0;i<30;i++){
+      const length=.35+Math.random()*1.15;
+      const streak=new THREE.Mesh(new THREE.BoxGeometry(length,.012,.012),new THREE.MeshBasicMaterial({color:i%3===0?0xc5e7f5:0xb99a68,transparent:true,opacity:.18+Math.random()*.28}));
+      streak.position.set(-5+Math.random()*10,.45+Math.random()*2.1,(Math.random()-.5)*7);
+      streak.userData.speed=.07+Math.random()*.12;
+      streakGroup.add(streak); streaks.push(streak);
+    }
     const shadow = new THREE.Mesh(new THREE.CircleGeometry(2.5,48), new THREE.MeshBasicMaterial({ color: 0x000000, transparent:true, opacity:.34 }));
     shadow.rotation.x=-Math.PI/2; shadow.position.y=.025; shadow.scale.set(1,.42,1); car.add(shadow);
-    sceneRef.current={scene,camera,renderer,car,lights:lamps};
+    sceneRef.current={scene,camera,renderer,car,lights:[...lamps,...tailLamps],beams,spots,streaks};
 
     const resize=()=>{ if(!el||disposed)return; const w=el.clientWidth||640; const h=el.clientHeight||360; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); };
     const observer=new ResizeObserver(resize); observer.observe(el); resize();
     let frame=0;
-    const render=()=>{ if(disposed)return; renderer.render(scene,camera); frame=requestAnimationFrame(render); };
+    const clock=new THREE.Clock();
+    const render=()=>{ if(disposed)return; const dt=Math.min(clock.getDelta(),.04); const data=sceneRef.current; if(data){ data.streaks.forEach(s=>{s.position.x-=s.userData.speed*dt*60;if(s.position.x < -6){s.position.x=6;s.position.y=.45+Math.random()*2.1;s.position.z=(Math.random()-.5)*7;}}); } renderer.render(scene,camera); frame=requestAnimationFrame(render); };
     render();
     return ()=>{ disposed=true; cancelAnimationFrame(frame); observer.disconnect(); renderer.dispose(); scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose(); const m=o.material; (Array.isArray(m)?m:[m]).forEach(v=>v.dispose());}}); el.removeChild(renderer.domElement); sceneRef.current=null; };
   }, []);
 
   useEffect(() => {
     const data=sceneRef.current; if(!data)return;
-    data.lights.forEach(l=>{ const m=l.material as THREE.MeshStandardMaterial; m.emissiveIntensity=lightsOn?3.2:.25; });
+    data.lights.forEach((l,i)=>{ const m=l.material as THREE.MeshStandardMaterial; m.emissiveIntensity=lightsOn?(i<2?7.5:6.5):(i<2?.25:.7); });\n    data.beams.forEach((b,i)=>{(b.material as THREE.MeshBasicMaterial).opacity=lightsOn?(i<2?.48:.34):.035;});\n    data.spots.forEach(s=>{s.intensity=lightsOn?34:0;});
   },[lightsOn]);
 
   useEffect(() => {
