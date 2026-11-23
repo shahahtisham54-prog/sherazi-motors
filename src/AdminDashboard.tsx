@@ -15,7 +15,6 @@ export default function AdminDashboard() {
   const [editId, setEditId] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
-  const [photoFiles, setPhotoFiles] = useState<FileList | null>(null);
 
   const load = async () => {
     try {
@@ -55,7 +54,7 @@ export default function AdminDashboard() {
         setEditId(savedId);
       }
       await load();
-      setMessage('Vehicle details saved. You can now add photos below.');
+      setMessage('Vehicle details saved.');
 
     } catch {
       setMessage('Could not save the listing. Please check the details and try again.');
@@ -79,24 +78,6 @@ export default function AdminDashboard() {
     if (!window.confirm('Permanently delete ' + item.make + ' ' + item.model + '?')) return;
     try { await api.delete('/api/admin/vehicles/' + item.id); await load(); setMessage('Vehicle listing deleted.'); }
     catch { setMessage('Could not delete this listing.'); }
-  };
-
-  const uploadPhotos = async () => {
-    if (!editId || !photoFiles?.length || busy) return;
-    const formData = new FormData();
-    Array.from(photoFiles).forEach(file => formData.append('photos', file));
-    setBusy(true);
-    setMessage('');
-    try {
-      await api.upload('/api/admin/vehicles/' + editId + '/photos', formData);
-      setPhotoFiles(null);
-      const picker = document.getElementById('vehicle-photo-upload') as HTMLInputElement | null;
-      if (picker) picker.value = '';
-      await load();
-      setMessage('Vehicle photos uploaded successfully.');
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Photo upload failed. Check the R2 bucket binding.');
-    } finally { setBusy(false); }
   };
 
   const login = () => { window.location.href = '/api/access/login?returnTo=' + encodeURIComponent(window.location.href); };
@@ -126,15 +107,7 @@ export default function AdminDashboard() {
             <label>Status<select value={form.status} onChange={e => change('status', e.target.value)}><option value="available">Available</option><option value="sold">Sold</option></select></label>
           </div>
           <label className="admin-description">Description<textarea rows={3} maxLength={1500} value={form.description} onChange={e => change('description', e.target.value)} placeholder="Condition, variant, features and other useful details…" /></label>
-          {editId && <div className="admin-photo-upload">
-            <label>Vehicle photos (JPG, PNG or WebP · up to 8 MB each)
-              <input id="vehicle-photo-upload" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={e => setPhotoFiles(e.target.files)} />
-            </label>
-            <button type="button" className="admin-cancel" disabled={!photoFiles?.length || busy} onClick={uploadPhotos}>{busy ? 'Uploading…' : 'Upload selected photos'}</button>
-            <small>Up to 8 photos per vehicle. Create or save the vehicle first, then upload its photos.</small>
-            {items.find(item => item.id === editId)?.photoUrls?.length ? <div className="admin-photo-preview">{items.find(item => item.id === editId)!.photoUrls!.map(url => <img key={url} src={url} alt="Vehicle photo" />)}</div> : null}
-          </div>}
-          {!editId && <p className="admin-empty">Save the vehicle details first to enable secure photo uploads.</p>}
+          <p className="admin-empty">Vehicle photos can be added once image storage is configured. Listings and enquiries remain available without photos.</p>
           <button className="admin-main-button" disabled={busy}>{busy ? 'Saving…' : editId ? 'Save changes' : 'Add vehicle'} <Check size={16} /></button>
         </form>
       </section>
