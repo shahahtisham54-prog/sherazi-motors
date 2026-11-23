@@ -1097,3 +1097,15 @@ select {
 .form-top {
   color: #70552e;
 }
+
+
+/* Final contrast pass for small text and numbered labels. */
+.topline-note {
+  color: #c3c9c3;
+  opacity: 1;
+}
+.footer-brand small,
+.footer > span,
+.back-top {
+  color: #c3c9c3;
+}
