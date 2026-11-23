@@ -35,3 +35,5 @@ if (mount) {
 }
 
 // Keep the render boundary diagnostic visible during the production verification pass.
+
+// Production verification: graceful WebGL fallback is handled by the 3D viewer.
