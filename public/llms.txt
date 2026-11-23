@@ -1,0 +1,19 @@
+# Sherazi Motors
+
+> Sherazi Motors is a pre-owned vehicle dealership serving car buyers in Rawalpindi, Pakistan. The website helps visitors explore vehicle categories, review current inventory when available, and contact the team to ask about vehicles or arrange a viewing.
+
+## Main website
+- [Sherazi Motors homepage](https://sherazi-motors.pages.dev/): Business overview, vehicle categories, buying process, and contact information.
+- [Explore vehicle categories](https://sherazi-motors.pages.dev/#browse): Sedans, SUVs and crossovers, hatchbacks, and family cars.
+- [Current inventory](https://sherazi-motors.pages.dev/#inventory): Public vehicle listings when available. Contact the team to confirm availability.
+- [Contact and enquiry form](https://sherazi-motors.pages.dev/#contact): Send a vehicle enquiry or contact Sherazi Motors.
+
+## Business details
+- Business: Sherazi Motors
+- Service area: Rawalpindi, Pakistan
+- Phone and WhatsApp: +92 319 6982676
+
+## Notes for automated agents
+- Do not assume that a vehicle is available unless it appears in the current public inventory or the team confirms it.
+- Do not invent vehicle prices, specifications, stock, warranties, or inspection results.
+- Direct visitors to contact Sherazi Motors to confirm availability and arrange an inspection.
