@@ -1,5 +1,5 @@
 /* Generated using AppDeploy UI skill */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1057,3 +1057,16 @@ select {
     transition: none !important;
   }
 }
+
+
+/* Accessibility: strengthen secondary text contrast on light surfaces. */
+.brand small { color: #626a66; }
+.intro-label, .eyebrow { color: #765d35; }
+.category-number { color: #705a36; }
+.category-card p, .inventory-note { color: #5e6862; }
+.inventory-note strong { color: #263330; }
+.contact-detail small { color: #626b65; }
+.vehicle-showcase-heading > p,
+.vehicle-empty,
+.vehicle-public-info small,
+.vehicle-card-meta { color: #5d6761; }
