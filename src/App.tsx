@@ -518,7 +518,7 @@ function App() {
         <span>
           © {new Date().getFullYear()} Sherazi Motors. All rights reserved.
         </span>
-        <a href="/admin" className="back-top">ADMIN</a>
+        <a href="/admin" className="footer-admin-link" aria-label="Open Sherazi Motors admin login">ADMIN LOGIN</a>
         <a href="#home" className="back-top">
           BACK TO TOP ↑
         </a>
