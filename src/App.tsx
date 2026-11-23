@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { api } from './lib/api';
 import VehicleShowcase from './VehicleShowcase';
+import { HeroCarExperience, DetailStudio } from './ImmersiveExperience';
 import './vehicle-showcase.css';
 import {
   ArrowRight,
@@ -174,6 +175,7 @@ function App() {
               </a>
             </div>
           </div>
+          <HeroCarExperience />
           <div className="hero-stamp">
             <span>SHERAZI</span>
             <b>MOTORS</b>
@@ -269,6 +271,7 @@ function App() {
         </section>
 
         <VehicleShowcase />
+        <DetailStudio />
 
         <section className="dark-band" id="about">
           <div className="dark-band-image" />
