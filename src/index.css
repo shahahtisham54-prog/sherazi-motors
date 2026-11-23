@@ -1109,3 +1109,24 @@ select {
 .back-top {
   color: #c3c9c3;
 }
+
+
+/* Keep owner access available without competing with customer actions. */
+.footer-admin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 13px;
+  border: 1px solid rgba(198, 165, 106, 0.58);
+  color: #e1cfaa;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.footer-admin-link:hover,
+.footer-admin-link:focus-visible {
+  background: #c6a56a;
+  border-color: #c6a56a;
+  color: #172124;
+}
