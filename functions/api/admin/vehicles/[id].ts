@@ -1,9 +1,9 @@
-import type { PluginData } from "@cloudflare/pages-plugin-cloudflare-access";
 interface Env { DB: D1Database }
+interface AdminData { adminEmail?: string }
 const OWNER = "as3703195@gmail.com";
-const allowed = (data: PluginData) => String(data.cloudflareAccess.JWT.payload.email || "").toLowerCase() === OWNER;
+const allowed = (data: AdminData) => data.adminEmail === OWNER;
 
-export const onRequestPut: PagesFunction<Env, string, PluginData> = async ({ data, env, request, params }) => {
+export const onRequestPut: PagesFunction<Env, string, AdminData> = async ({ data, env, request, params }) => {
   if (!allowed(data)) return Response.json({ error: "Not authorised." }, { status: 403 });
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; }
