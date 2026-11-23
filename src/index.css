@@ -1084,3 +1084,16 @@ select {
 .form-disclaimer {
   color: #505b55;
 }
+
+
+/* PageSpeed accessibility: meet readable contrast on light surfaces. */
+.section h2 em,
+.contact-copy h2 em {
+  color: #765321;
+}
+.step > span {
+  color: #765321;
+}
+.form-top {
+  color: #70552e;
+}
