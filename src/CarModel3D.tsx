@@ -6,6 +6,8 @@ type Props = { lightsOn: boolean; rotating: boolean };
 export function CarModel3D({ lightsOn, rotating }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const sceneState = useRef<{ headlights: THREE.MeshStandardMaterial[]; group: THREE.Group } | null>(null);
+  const rotatingRef = useRef(rotating);
+  rotatingRef.current = rotating;
 
   useEffect(() => {
     const host = hostRef.current;
@@ -185,7 +187,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     const animate = () => {
       frame = window.requestAnimationFrame(animate);
       if (!dragging) {
-        car.rotation.y += rotating ? 0.012 : 0;
+        car.rotation.y += rotatingRef.current ? 0.012 : 0;
         car.rotation.y += (targetY - car.rotation.y) * 0.045;
         car.rotation.x += (targetX - car.rotation.x) * 0.045;
       }
@@ -223,11 +225,6 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
       if (object instanceof THREE.PointLight && object !== null) object.intensity = lightsOn ? 2.4 : 0;
     });
   }, [lightsOn]);
-
-  useEffect(() => {
-    // The animation loop reads this flag through a data attribute on the host.
-    hostRef.current?.setAttribute('data-rotating', rotating ? 'true' : 'false');
-  }, [rotating]);
 
   return (
     <div
