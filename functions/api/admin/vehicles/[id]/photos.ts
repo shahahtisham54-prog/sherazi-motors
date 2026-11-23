@@ -1,7 +1,7 @@
-import type { PluginData } from "@cloudflare/pages-plugin-cloudflare-access";
 interface Env { DB: D1Database; VEHICLE_PHOTOS: R2Bucket }
+interface AdminData { adminEmail?: string }
 const OWNER = "as3703195@gmail.com";
-const allowed = (data: PluginData) => String(data.cloudflareAccess.JWT.payload.email || "").toLowerCase() === OWNER;
+const allowed = (data: AdminData) => data.adminEmail === OWNER;
 const keyPattern = /^[a-f0-9-]+\.(?:jpg|jpeg|png|webp)$/i;
 function parsePhotos(value: unknown): string[] {
   try {
@@ -9,7 +9,7 @@ function parsePhotos(value: unknown): string[] {
     return Array.isArray(parsed) ? parsed.filter((x): x is string => typeof x === "string" && keyPattern.test(x)).slice(0, 8) : [];
   } catch { return []; }
 }
-export const onRequestPost: PagesFunction<Env, string, PluginData> = async ({ data, env, request, params }) => {
+export const onRequestPost: PagesFunction<Env, string, AdminData> = async ({ data, env, request, params }) => {
   if (!allowed(data)) return Response.json({ error: "Not authorised." }, { status: 403 });
   const id = String(params.id || "");
   const vehicle = await env.DB.prepare("SELECT id, photos FROM vehicles WHERE id = ?").bind(id).first<{id:string;photos:string}>();
