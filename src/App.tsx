@@ -186,6 +186,17 @@ function App() {
           </div>
         </section>
 
+        <section className="intro-strip">
+          <div className="intro-label">THE SHERAZI MOTORS APPROACH</div>
+          <p>
+            A car is more than a purchase. It is part of your everyday life. We
+            make it easier to find an option that fits yours.
+          </p>
+          <a href="#about" aria-label="Learn about Sherazi Motors">
+            <ArrowUpRight size={21} />
+          </a>
+        </section>
+
         <section className="hero-car-showcase" aria-label="Sherazi Motors virtual car showroom">
           <div className="showroom-heading">
             <div className="showroom-kicker"><span className="showroom-live-dot" /> SHERAZI MOTORS / VIRTUAL SHOWROOM</div>
@@ -209,17 +220,6 @@ function App() {
           </div>
         </section>
 
-
-        <section className="intro-strip">
-          <div className="intro-label">THE SHERAZI MOTORS APPROACH</div>
-          <p>
-            A car is more than a purchase. It is part of your everyday life. We
-            make it easier to find an option that fits yours.
-          </p>
-          <a href="#about" aria-label="Learn about Sherazi Motors">
-            <ArrowUpRight size={21} />
-          </a>
-        </section>
 
         <section className="section browse-section" id="browse">
           <div className="section-heading">
