@@ -746,3 +746,41 @@
 @media (max-width:680px) {
   .hero-car-showcase .real-car-stage { min-height: 300px; }
 }
+
+
+/* Graceful visual fallback when the browser cannot create a WebGL context. */
+.car-model-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 72%,rgba(145,173,171,.16),transparent 62%);
+}
+.car-model-fallback .car-model {
+  width: min(92%, 620px);
+  height: 220px;
+  transform: scale(1.12) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg);
+  transform-origin: 50% 58%;
+  filter: drop-shadow(0 24px 22px rgba(0,0,0,.42));
+}
+.car-model-fallback-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+  color: rgba(240,230,210,.62);
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+@media (max-width:680px) {
+  .car-model-fallback .car-model {
+    width: 100%;
+    transform: scale(.94) rotateX(9deg) rotateY(-19deg) rotateZ(-1deg);
+  }
+  .car-model-fallback-note {
+    bottom: 8%;
+    font-size: 6px;
+  }
+}
