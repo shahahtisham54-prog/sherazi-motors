@@ -147,10 +147,14 @@ function App() {
 
       <main>
         <section className="hero" id="home">
-          <div
+          <img
             className="hero-image"
-            role="img"
-            aria-label="Premium car on a scenic road"
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=75"
+            srcSet="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=72 900w, https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=75 1600w"
+            sizes="100vw"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
           />
           <div className="hero-shade" />
           <div className="hero-content">
