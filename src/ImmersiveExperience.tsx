@@ -1,5 +1,5 @@
-import { lazy, Suspense, useState } from 'react';
-import { ArrowDown, ArrowUpRight, Cuboid, Gauge, RotateCw, Sparkles } from 'lucide-react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { ArrowDown, ArrowUpRight, Gauge, RotateCw, Sparkles } from 'lucide-react';
 import './immersive.css';
 const CarModel3D = lazy(() => import('./CarModel3D').then(module => ({ default: module.CarModel3D })));
 
@@ -13,6 +13,31 @@ export function HeroCarExperience() {
   const [rotating, setRotating] = useState(false);
   const [lights, setLights] = useState(true);
   const [modelLoaded, setModelLoaded] = useState(false);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setModelLoaded(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setModelLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '180px 0px' }
+    );
+
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
   const rotateView = () => { if (rotating) return; setRotating(true); window.setTimeout(() => setRotating(false), 2300); };
   return (
     <div className={`hero-car-experience view-0 ${rotating ? 'is-rotating' : ''} ${lights ? 'lights-on' : ''}`}>
@@ -21,17 +46,13 @@ export function HeroCarExperience() {
       <div className="hero-car-orbit orbit-one" />
       <div className="hero-car-orbit orbit-two" />
       <div className="hero-car-label"><span>DESIGN STUDY / 001</span><b>SHERAZI MOTORS</b></div>
-      <div className="hero-car-stage real-car-stage">
+      <div className="hero-car-stage real-car-stage" ref={stageRef}>
         {modelLoaded ? (
-          <Suspense fallback={<div className="car-model-loading">Preparing the 3D showroom…</div>}>
+          <Suspense fallback={<div className="car-model-loading" role="status">Preparing your 3D showroom…</div>}>
             <CarModel3D lightsOn={lights} rotating={rotating} />
           </Suspense>
         ) : (
-          <button className="car-model-load" type="button" onClick={() => setModelLoaded(true)}>
-            <Cuboid size={20} />
-            <span>LOAD INTERACTIVE 3D VIEW</span>
-            <small>Optional · loads when you choose</small>
-          </button>
+          <div className="car-model-loading" role="status">3D showroom will load automatically…</div>
         )}
       </div>
       {modelLoaded && (
