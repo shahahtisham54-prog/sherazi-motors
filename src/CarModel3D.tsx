@@ -59,7 +59,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
     const glass = new THREE.MeshPhysicalMaterial({ color: 0x172b35, metalness: 0.35, roughness: 0.12, transparent: true, opacity: 0.88, clearcoat: 1 });
     const rubber = new THREE.MeshStandardMaterial({ color: 0x080b0d, roughness: 0.86 });
     const alloy = new THREE.MeshStandardMaterial({ color: 0xb9c0bf, metalness: 0.9, roughness: 0.24 });
-    const headlightMaterial = new THREE.MeshStandardMaterial({ color: 0xfff0c9, emissive: 0xffd88a, emissiveIntensity: lightsOn ? 3.2 : 0.12, metalness: 0.1, roughness: 0.2 });
+    const headlightMaterial = new THREE.MeshStandardMaterial({ color: 0xfff0c9, emissive: 0xffedbd, emissiveIntensity: lightsOn ? 8.5 : 0.12, metalness: 0.1, roughness: 0.2 });
     const headlights: THREE.MeshStandardMaterial[] = [headlightMaterial];
 
     const makeBody = (points: [number, number][], depth: number, material: THREE.Material) => {
@@ -121,7 +121,7 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
       const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.095, 0.27), headlightMaterial);
       lamp.position.set(2.19, 0.72, z);
       car.add(lamp);
-      const lampGlow = new THREE.PointLight(0xffd995, lightsOn ? 2.4 : 0, 1.8);
+      const lampGlow = new THREE.PointLight(0xffe7b0, lightsOn ? 7.5 : 0, 4.2);
       lampGlow.position.set(2.35, 0.72, z);
       car.add(lampGlow);
     }
@@ -234,10 +234,10 @@ export function CarModel3D({ lightsOn, rotating }: Props) {
   useEffect(() => {
     if (!sceneState.current) return;
     sceneState.current.headlights.forEach(material => {
-      material.emissiveIntensity = lightsOn ? 3.2 : 0.12;
+      material.emissiveIntensity = lightsOn ? 8.5 : 0.12;
     });
     sceneState.current.group.traverse(object => {
-      if (object instanceof THREE.PointLight && object !== null) object.intensity = lightsOn ? 2.4 : 0;
+      if (object instanceof THREE.PointLight && object !== null) object.intensity = lightsOn ? 7.5 : 0;
     });
     sceneState.current.invalidate();
   }, [lightsOn]);
